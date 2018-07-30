@@ -9,9 +9,7 @@ import java.util.EmptyStackException;
 import java.util.Stack;
 import java.util.stream.Stream;
 
-public class RPNCalculator implements Calculator{
-
-    public void RPNCalculator(){};
+public class RPNCalculator implements Calculator {
 
     @Override
     public void calculate() {
@@ -26,7 +24,7 @@ public class RPNCalculator implements Calculator{
                 });
             }
         } catch (URISyntaxException | IOException e) {
-            System.out.println("Cannot read file " + e.getMessage());
+            throw new RuntimeException("Cannot read file");
         }
     }
 
@@ -35,7 +33,7 @@ public class RPNCalculator implements Calculator{
             bufferedWriter.write(line + " = " + computedResult);
             bufferedWriter.newLine();
         } catch (IOException e) {
-            System.out.println("Cannot write to file " + e.getMessage());
+            throw new RuntimeException("Cannot write to file");
         }
     }
 

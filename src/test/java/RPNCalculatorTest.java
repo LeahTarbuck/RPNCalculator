@@ -1,5 +1,8 @@
+import mockit.Expectations;
 import mockit.Mock;
 import mockit.MockUp;
+import mockit.Mocked;
+import mockit.Tested;
 import org.apache.maven.surefire.shade.org.apache.maven.shared.utils.io.FileUtils;
 import org.junit.Test;
 
@@ -13,11 +16,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class RPNCalculatorTest {
 
-//    @Tested
-//    private RPNCalculator rpnCalculator;
+    @Tested
+    private RPNCalculator rpnCalculator;
 
     @Test
     public void computeLine_withAddExpression_producesAdditionResult() {
@@ -99,8 +103,8 @@ public class RPNCalculatorTest {
 
     @Test
     public void performCalculation_withFile_writesCalculationsToFileSuccessfully() throws IOException {
-        createRPNCalculationFile("inputTestFile.txt","16 2 / 8 + 2 *", "1 1 + 14 + sqrt");
-        createRPNCalculationFile("expectedTestFileResults.txt","16 2 / 8 + 2 * = 32.0", "1 1 + 14 + sqrt = 4.0");
+        createRPNCalculationFile("inputTestFile.txt", "16 2 / 8 + 2 *", "1 1 + 14 + sqrt");
+        createRPNCalculationFile("expectedTestFileResults.txt", "16 2 / 8 + 2 * = 32.0", "1 1 + 14 + sqrt = 4.0");
 
         new MockUp<Paths>() {
             @Mock
@@ -109,7 +113,6 @@ public class RPNCalculatorTest {
             }
         };
 
-        RPNCalculator rpnCalculator = new RPNCalculator();
         rpnCalculator.calculate();
 
         assertThat(FileUtils.contentEquals(new File("computedResult.txt"),
@@ -120,21 +123,36 @@ public class RPNCalculatorTest {
         Files.delete(Paths.get("computedResult.txt"));
     }
 
-//    @Test
-//    public void performCalculation_withIOExceptionOnWritingOutputFile_failsWithError(){
-//        RPNCalculator rpnCalculator = new RPNCalculator();
-//
-//        new Expectations(){{
-//            rpnCalculator.writeResultToFile((BufferedWriter) any, anyString, anyString);
-//            result = new IOException("Cannot write to file ");
-//        }};
-//
-//        assertThatThrownBy(() -> {
-//            rpnCalculator.calculate();
-//        }).isExactlyInstanceOf(IOException.class)
-//                .hasMessage("Cannot write to file ");
-//    }
+    @Test
+    public void performCalculation_withIOExceptionOnReadingInputFile_throwsRuntimeException() throws IOException {
 
+        new MockUp<Paths>() {
+            @Mock
+            Path get(URI uri) throws IOException {
+                throw new IOException();
+            }
+        };
+
+        assertThatThrownBy(() -> {
+            rpnCalculator.calculate();
+        }).isExactlyInstanceOf(RuntimeException.class)
+                .hasMessage("Cannot read file");
+    }
+
+    @Test
+    public void writeResultToFile_catchesIOException_throwsRuntimeException(@Mocked BufferedWriter bufferedWriter) throws IOException {
+
+        new Expectations() {{
+            bufferedWriter.newLine();
+            result = new IOException();
+        }};
+
+        assertThatThrownBy(() -> {
+            rpnCalculator.writeResultToFile(bufferedWriter, "20 20 +", "40");
+        }).isExactlyInstanceOf(RuntimeException.class)
+                .hasMessage("Cannot write to file");
+
+    }
 
     private void createRPNCalculationFile(String fileName, String line1, String line2) throws IOException {
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(fileName));
