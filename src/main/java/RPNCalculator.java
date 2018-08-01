@@ -76,9 +76,19 @@ public class RPNCalculator implements Calculator {
                 } catch (EmptyStackException e) {
                     return "Not Reverse Polish Notation try backwards";
                 }
+            } else if (token.equals("avg")) {
+                if (stack.size() != 2) {
+                    return "Not Reverse Polish Notation try with two values";
+                }
+                stack.push((stack.pop() + stack.pop()) / 2);
+            } else if (token.equals("mod")) {
+                if (stack.size() != 2) {
+                    return "Not Reverse Polish Notation try with two values";
+                }
+                double divisor = stack.pop();
+                stack.push(stack.pop() % divisor);
             } else {
                 stack.push(Double.parseDouble(token));
-
             }
         }
         return (stack.pop()).toString();

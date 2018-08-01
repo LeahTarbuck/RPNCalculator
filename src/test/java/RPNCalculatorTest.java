@@ -72,8 +72,62 @@ public class RPNCalculatorTest {
     }
 
     @Test
+    public void computeLine_withAverageExpression_producesAverageResult() {
+        String result = RPNCalculator.computeLine("3 5 avg");
+        assertThat(result).isEqualTo("4.0");
+    }
+
+    @Test
+    public void computeLine_withAverageExpressionAndTooManyValues_producesErrorResult() {
+        String result = RPNCalculator.computeLine("3 5 4 avg");
+        assertThat(result).isEqualTo("Not Reverse Polish Notation try with two values");
+    }
+
+    @Test
+    public void computeLine_withAverageExpressionAndTooFewValues_producesErrorResult() {
+        String result = RPNCalculator.computeLine("3 avg");
+        assertThat(result).isEqualTo("Not Reverse Polish Notation try with two values");
+    }
+
+    @Test
+    public void computeLine_withAdditionAndAverageExpressionAndTooFewValues_producesErrorResult() {
+        String result = RPNCalculator.computeLine("4 3 + avg");
+        assertThat(result).isEqualTo("Not Reverse Polish Notation try with two values");
+    }
+
+    @Test
+    public void computeLine_withModulusExpression_producesModulusResult() {
+        String result = RPNCalculator.computeLine("10 5 mod");
+        assertThat(result).isEqualTo("0.0");
+    }
+
+    @Test
+    public void computeLine_withModulusExpression2_producesModulusResult() {
+        String result = RPNCalculator.computeLine("5 10 mod");
+        assertThat(result).isEqualTo("5.0");
+    }
+
+    @Test
+    public void computeLine_withModulusExpressionAndTooManyValues_producesErrorResult() {
+        String result = RPNCalculator.computeLine("10 5 5 mod");
+        assertThat(result).isEqualTo("Not Reverse Polish Notation try with two values");
+    }
+
+    @Test
+    public void computeLine_withModulusExpressionAndTooFewValues_producesErrorResult() {
+        String result = RPNCalculator.computeLine("10 mod");
+        assertThat(result).isEqualTo("Not Reverse Polish Notation try with two values");
+    }
+
+    @Test
+    public void computeLine_withNonPRNModulusExpressionAndTooFewValues_producesErrorResult() {
+        String result = RPNCalculator.computeLine("mod 10");
+        assertThat(result).isEqualTo("Not Reverse Polish Notation try with two values");
+    }
+
+    @Test
     public void computeLine_withNonPRNAdditionExpression_producesErrorResult() {
-        String result = RPNCalculator.computeLine("1 + 1");
+        String result = RPNCalculator.computeLine("+ 1 1");
         assertThat(result).isEqualTo("Not Reverse Polish Notation try backwards");
     }
 
