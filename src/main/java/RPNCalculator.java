@@ -1,3 +1,5 @@
+import org.springframework.stereotype.Service;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,6 +11,7 @@ import java.util.EmptyStackException;
 import java.util.Stack;
 import java.util.stream.Stream;
 
+@Service
 public class RPNCalculator implements Calculator {
 
     @Override
@@ -39,7 +42,7 @@ public class RPNCalculator implements Calculator {
 
 
     public static String computeLine(String line) {
-        Stack<Double> stack = new Stack<Double>();
+        Stack<Double> stack = new Stack<>();
         for (String token : line.trim().split("[ \t]+")) {
             if (token.equals("+")) {
                 try {
@@ -88,7 +91,11 @@ public class RPNCalculator implements Calculator {
                 double divisor = stack.pop();
                 stack.push(stack.pop() % divisor);
             } else {
-                stack.push(Double.parseDouble(token));
+                try {
+                    stack.push(Double.parseDouble(token));
+                } catch (NumberFormatException e) {
+                    return "Not a valid operator";
+                }
             }
         }
         return (stack.pop()).toString();

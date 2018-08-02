@@ -25,134 +25,140 @@ public class RPNCalculatorTest {
 
     @Test
     public void computeLine_withAddExpression_producesAdditionResult() {
-        String result = RPNCalculator.computeLine("1.0 3.0 +");
+        String result = rpnCalculator.computeLine("1.0 3.0 +");
         assertThat(result).isEqualTo("4.0");
     }
 
     @Test
     public void computeLine_withSubtractionExpression_producesSubtractionResult() {
-        String result = RPNCalculator.computeLine("3.0 1.0 -");
+        String result = rpnCalculator.computeLine("3.0 1.0 -");
         assertThat(result).isEqualTo("2.0");
     }
 
     @Test
     public void computeLine_withSubtractionExpression_producesNegativeSubtractionResult() {
-        String result = RPNCalculator.computeLine("1.0 3.0 -");
+        String result = rpnCalculator.computeLine("1.0 3.0 -");
         assertThat(result).isEqualTo("-2.0");
     }
 
     @Test
     public void computeLine_withMultiplicationExpression_producesMultiplicationResult() {
-        String result = RPNCalculator.computeLine("2.0 3.0 *");
+        String result = rpnCalculator.computeLine("2.0 3.0 *");
         assertThat(result).isEqualTo("6.0");
     }
 
     @Test
     public void computeLine_withDivisionExpression_producesDivisionResult() {
-        String result = RPNCalculator.computeLine("12.0 3.0 /");
+        String result = rpnCalculator.computeLine("12.0 3.0 /");
         assertThat(result).isEqualTo("4.0");
     }
 
     @Test
     public void computeLine_withDivisionAndMultiplicationExpression_producesCorrectResult() {
-        String result = RPNCalculator.computeLine("4 4 * 2 /");
+        String result = rpnCalculator.computeLine("4 4 * 2 /");
         assertThat(result).isEqualTo("8.0");
     }
 
     @Test
     public void computeLine_withAdditionAndSubtractionExpression_producesCorrectResult() {
-        String result = RPNCalculator.computeLine("20 20 + 35 -");
+        String result = rpnCalculator.computeLine("20 20 + 35 -");
         assertThat(result).isEqualTo("5.0");
     }
 
     @Test
     public void computeLine_withSqrtExpression_producesSqrtResult() {
-        String result = RPNCalculator.computeLine("5 6 * 5 - sqrt");
+        String result = rpnCalculator.computeLine("5 6 * 5 - sqrt");
         assertThat(result).isEqualTo("5.0");
     }
 
     @Test
     public void computeLine_withAverageExpression_producesAverageResult() {
-        String result = RPNCalculator.computeLine("3 5 avg");
+        String result = rpnCalculator.computeLine("3 5 avg");
         assertThat(result).isEqualTo("4.0");
     }
 
     @Test
     public void computeLine_withAverageExpressionAndTooManyValues_producesErrorResult() {
-        String result = RPNCalculator.computeLine("3 5 4 avg");
+        String result = rpnCalculator.computeLine("3 5 4 avg");
         assertThat(result).isEqualTo("Not Reverse Polish Notation try with two values");
     }
 
     @Test
     public void computeLine_withAverageExpressionAndTooFewValues_producesErrorResult() {
-        String result = RPNCalculator.computeLine("3 avg");
+        String result = rpnCalculator.computeLine("3 avg");
         assertThat(result).isEqualTo("Not Reverse Polish Notation try with two values");
     }
 
     @Test
     public void computeLine_withAdditionAndAverageExpressionAndTooFewValues_producesErrorResult() {
-        String result = RPNCalculator.computeLine("4 3 + avg");
+        String result = rpnCalculator.computeLine("4 3 + avg");
         assertThat(result).isEqualTo("Not Reverse Polish Notation try with two values");
     }
 
     @Test
     public void computeLine_withModulusExpression_producesModulusResult() {
-        String result = RPNCalculator.computeLine("10 5 mod");
+        String result = rpnCalculator.computeLine("10 5 mod");
         assertThat(result).isEqualTo("0.0");
     }
 
     @Test
     public void computeLine_withModulusExpression2_producesModulusResult() {
-        String result = RPNCalculator.computeLine("5 10 mod");
+        String result = rpnCalculator.computeLine("5 10 mod");
         assertThat(result).isEqualTo("5.0");
     }
 
     @Test
     public void computeLine_withModulusExpressionAndTooManyValues_producesErrorResult() {
-        String result = RPNCalculator.computeLine("10 5 5 mod");
+        String result = rpnCalculator.computeLine("10 5 5 mod");
         assertThat(result).isEqualTo("Not Reverse Polish Notation try with two values");
     }
 
     @Test
     public void computeLine_withModulusExpressionAndTooFewValues_producesErrorResult() {
-        String result = RPNCalculator.computeLine("10 mod");
+        String result = rpnCalculator.computeLine("10 mod");
         assertThat(result).isEqualTo("Not Reverse Polish Notation try with two values");
     }
 
     @Test
     public void computeLine_withNonPRNModulusExpressionAndTooFewValues_producesErrorResult() {
-        String result = RPNCalculator.computeLine("mod 10");
+        String result = rpnCalculator.computeLine("mod 10");
         assertThat(result).isEqualTo("Not Reverse Polish Notation try with two values");
     }
 
     @Test
     public void computeLine_withNonPRNAdditionExpression_producesErrorResult() {
-        String result = RPNCalculator.computeLine("+ 1 1");
+        String result = rpnCalculator.computeLine("+ 1 1");
         assertThat(result).isEqualTo("Not Reverse Polish Notation try backwards");
     }
 
     @Test
     public void computeLine_withNonPRNSubtractionExpression_producesErrorResult() {
-        String result = RPNCalculator.computeLine("2 - 1");
+        String result = rpnCalculator.computeLine("2 - 1");
         assertThat(result).isEqualTo("Not Reverse Polish Notation try backwards");
     }
 
     @Test
     public void computeLine_withNonPRNMultiplicationExpression_producesErrorResult() {
-        String result = RPNCalculator.computeLine("1 * 1");
+        String result = rpnCalculator.computeLine("1 * 1");
         assertThat(result).isEqualTo("Not Reverse Polish Notation try backwards");
     }
 
     @Test
     public void computeLine_withNonPRNDivisionExpression_producesErrorResult() {
-        String result = RPNCalculator.computeLine("10 / 5");
+        String result = rpnCalculator.computeLine("10 / 5");
         assertThat(result).isEqualTo("Not Reverse Polish Notation try backwards");
     }
 
     @Test
     public void computeLine_withNonPRNSqrtExpression_producesErrorResult() {
-        String result = RPNCalculator.computeLine("sqrt 16");
+        String result = rpnCalculator.computeLine("sqrt 16");
         assertThat(result).isEqualTo("Not Reverse Polish Notation try backwards");
+    }
+
+    @Test
+    public void computeLine_withNonValidPRNOperator_producesErrorResult() {
+        String result = rpnCalculator.computeLine("1 2 + random");
+        assertThat(result).isEqualTo("Not a valid operator");
     }
 
     @Test

@@ -30,6 +30,7 @@ You can also execute the test file RPNCalculatorTest.java.
 
 
 ## Potential Enhancements
+* Add sine, cosine, tan operations
 * Add a logger 
 * Implement the Strategy pattern for RPNCalculator.computeLine() method
 * Use spring for DI and IoC
